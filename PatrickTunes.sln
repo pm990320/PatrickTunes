@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "taglib-sharp", "taglib-sharp\src\taglib-sharp.csproj", "{6B143A39-C7B2-4743-9917-92262C60E9A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatrickTunes", "PatrickTunes\PatrickTunes.csproj", "{DE5BC4AC-0914-4F02-83BB-B555B740DC62}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PatrickTunesInstaller", "PatrickTunesInstaller\PatrickTunesInstaller.vdproj", "{BB33F405-2A07-4A91-9CB9-E0FD82691249}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B143A39-C7B2-4743-9917-92262C60E9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B143A39-C7B2-4743-9917-92262C60E9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B143A39-C7B2-4743-9917-92262C60E9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B143A39-C7B2-4743-9917-92262C60E9A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE5BC4AC-0914-4F02-83BB-B555B740DC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE5BC4AC-0914-4F02-83BB-B555B740DC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE5BC4AC-0914-4F02-83BB-B555B740DC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE5BC4AC-0914-4F02-83BB-B555B740DC62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB33F405-2A07-4A91-9CB9-E0FD82691249}.Debug|Any CPU.ActiveCfg = Debug
+		{BB33F405-2A07-4A91-9CB9-E0FD82691249}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

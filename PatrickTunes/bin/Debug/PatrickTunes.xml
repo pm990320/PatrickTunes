@@ -1,0 +1,352 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PatrickTunes</name>
+    </assembly>
+    <members>
+        <member name="T:MusicApp.Database">
+            <summary>
+            The database class acts as an interface to the Database necessary for this project.
+            </summary>
+        </member>
+        <member name="F:MusicApp.Database.data">
+            <summary>
+            <c>public static MusicAppDBDataSet data</c> this is kept public because it is a dataset useable by all classes.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Database.#cctor">
+            <summary>
+            The static consturctor <c>static Database()</c> is used to give the Table Adapters the connection strings to the database,
+            and to initialise the tables in data <seealso cref="F:MusicApp.Database.data"/>
+            </summary>
+        </member>
+        <member name="M:MusicApp.Database.SearchDirectoriesAdapter">
+            <summary>
+            Acts as a get function for <c>_searchDirectoriesAdapter</c>.
+            
+            After any manipulation of the database using the Adapters, Fill Database.data with that adapter.
+            </summary>
+            <returns>Returns <c>_searchDirectoriesAdapter</c>.</returns>
+        </member>
+        <member name="M:MusicApp.Database.FilesAdapter">
+            <summary>
+            Acts as a get function for <c>_fileAdapter</c>.
+            
+            After any manipulation of the database using the Adapters, Fill Database.data with that adapter.
+            </summary>
+            <returns>Returns <c>_fileAdapter</c>.</returns>
+        </member>
+        <member name="M:MusicApp.Database.update">
+            <summary>
+            Updates the data in the actual database with the (assumingly) modified <c>Database.data</c> dataset.
+            WARNING, this will erase any changes made directly on the Database and not on Database.data!
+            After any manipulation of the database using the Adapters, Fill Database.data with that adapter.
+            <seealso cref="F:MusicApp.Database.data"/>
+            </summary>
+        </member>
+        <member name="M:MusicApp.Database.updatePlays(System.String)">
+            <summary>
+            The <c>updateStats()</c> method is used to update the played field in the database row corresponding to a given file. 
+            </summary>
+            <param name="directory">The directory (a.k.a. filename) of the file being updated.</param>
+        </member>
+        <member name="T:MusicApp.Display">
+            <summary>
+            The class which is the Windows Form for the application.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Display.#ctor">
+            <summary>
+            Default Constructor for Display.
+            Calls Form (base) 's InitialiseComponent() method.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Display.Display_Load(System.Object,System.EventArgs)">
+            <summary>
+            Additional code for when the display is first loaded.
+            
+            Checks if there is a need to index, and if yes indexes.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MusicApp.Display.DataView_DataError(System.Object,System.Windows.Forms.DataGridViewDataErrorEventArgs)">
+            <summary>
+            Called when a DataError event is fired, it <c>Invalidate()</c>s this.DataView.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MusicApp.Display.DataView_CellDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+            <summary>
+            Called when a cell in DataView is double clicked. It selects the appropriate song to play.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:MusicApp.Display.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Display.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MusicApp.Display.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:MusicApp.Indexer">
+            <summary>
+            The Indexer Class's purpose is to scan relevant directories for music files, then put them into 
+            the database, creating an index of music files. The indexer has methods to setup the directories,
+            to determine weather the Indexer has to run, and most of all the Index() method.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Indexer.needsToIndex">
+            <summary>
+            The <c>needsToIndex()</c> method returns a boolean depending on if there music files
+            stored in the index. It does this by checking if there are rows in the
+            Database.data.Files table.
+            </summary>
+            <returns>Returns a <c>bool</c>, true if there are no rows in the Database.data.Files table.</returns>
+        </member>
+        <member name="M:MusicApp.Indexer.isReadyToIndex">
+            <summary>
+            The <c>isReadyToIndex()</c> method determines if the Search Directories have been set up,
+            and returns a boolean based on if they have or not.
+            </summary>
+            <returns>Returns a <c>bool</c>, true if there are Search Directories the database.</returns>
+        </member>
+        <member name="M:MusicApp.Indexer.setupSearchDirectories">
+            <summary>
+            The setupSearchDirectories() method finds the music folder for all users on the computer and puts it's path in
+            the SearchDirectories table. 
+            </summary>
+        </member>
+        <member name="M:MusicApp.Indexer.Index">
+            <summary>
+            The Index() method is the most substantial method in the Indexer class. It performs the indexing operation.
+            
+            The Index() method first copies search directores and supported file extensions from the database to lists,
+            and creates an empty list called filenames, for the filenames which will be added later. Then the directories
+            are searched for files with any of the supported file extensions. The results are added to the filenames list.
+            
+            Then an exteral library called TagLibSharp is used to extract the metadata Title, Artist, Album and Genre from each file.
+            The Title, Artist, Genre and filename then make up a new record in the Database.data.Files table, which is inserted
+            into the database.
+            
+            NOTE:
+                - The Indexer() method checks if the search directories are set up, and takes appropriate action to correct this, 
+                  so you do not have to check this before calling the method.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.FilesDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SearchDirectoriesDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SupportedExtensionsDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.FilesRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SearchDirectoriesRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SupportedExtensionsRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.FilesRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SearchDirectoriesRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSet.SupportedExtensionsRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.FilesTableAdapter">
+             <summary>
+            Represents the connection and commands used to retrieve and save data.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.SearchDirectoriesTableAdapter">
+             <summary>
+            Represents the connection and commands used to retrieve and save data.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.SupportedExtensionsTableAdapter">
+             <summary>
+            Represents the connection and commands used to retrieve and save data.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager">
+             <summary>
+            TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
+            </summary>
+        </member>
+        <member name="M:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.UpdateUpdatedRows(MusicApp.MusicAppDBDataSet,System.Collections.Generic.List{System.Data.DataRow},System.Collections.Generic.List{System.Data.DataRow})">
+             <summary>
+            Update rows in top-down order.
+            </summary>
+        </member>
+        <member name="M:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.UpdateInsertedRows(MusicApp.MusicAppDBDataSet,System.Collections.Generic.List{System.Data.DataRow})">
+             <summary>
+            Insert rows in top-down order.
+            </summary>
+        </member>
+        <member name="M:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.UpdateDeletedRows(MusicApp.MusicAppDBDataSet,System.Collections.Generic.List{System.Data.DataRow})">
+             <summary>
+            Delete rows in bottom-up order.
+            </summary>
+        </member>
+        <member name="M:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.GetRealUpdatedRows(System.Data.DataRow[],System.Collections.Generic.List{System.Data.DataRow})">
+             <summary>
+            Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
+            </summary>
+        </member>
+        <member name="M:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.UpdateAll(MusicApp.MusicAppDBDataSet)">
+             <summary>
+            Update all changes to the dataset.
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.UpdateOrderOption">
+             <summary>
+            Update Order Option
+            </summary>
+        </member>
+        <member name="T:MusicApp.MusicAppDBDataSetTableAdapters.TableAdapterManager.SelfReferenceComparer">
+             <summary>
+            Used to sort self-referenced table's rows
+            </summary>
+        </member>
+        <member name="T:MusicApp.PlayerState">
+            <summary>
+            The PlayerState enum is used in the Player class to determine the state of the player for various uses.
+            </summary>
+        </member>
+        <member name="T:MusicApp.Player">
+            <summary>
+            The Player Class acts as an interface to Windows Media Player. 
+            It utilises Windows Media Player to play audio files.
+            
+            Invariant: 
+            - The Windows Media Player library is installed in the destination computer.
+            - _currFile holds the name of the file currently playing.
+            - the PlayerMainLoop() method is running in a thread of it's own.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.playerMainLoop">
+            <summary>
+            To be called inside a separate thread. Makes the program shuffle after a file finishes playing.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.playNew(System.String)">
+            <summary>
+            The <c>playNew()</c> method is used to play a new file. 
+            
+            It configures the player, updates statistics and updates the Title, Artist, Album and Genre.
+            </summary>
+            <param name="filename">A string containing the path of a valid filename</param>
+        </member>
+        <member name="M:MusicApp.Player.play">
+            <summary>
+            The <c>play()</c> method plays the file currently in Windows Media Player or currently stored in _currFile.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.resume">
+            <summary>
+            The <c>resume()</c> method invokes the the play command in WMP.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.stop">
+            <summary>
+            The <c>stop()</c> method invokes the stop command in WMP.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.pause">
+            <summary>
+            The <c>pause()</c> method invokes the pause command in WMP.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Player.getShuffledFile">
+            <summary>
+            The <c>getShuffledFile()</c> method is called when a new file needs to be picked
+            by the shuffle algorithm. The shuffle algorithm is a simple random number generation,
+            with seed as current time in milliseconds, which produces an integer uses as an ID to find
+            a file in the Database.
+            </summary>
+            <returns>Returns the filename of the file calculated by the 
+            Shuffle algorithm as the next file.</returns>
+        </member>
+        <member name="T:MusicApp.Program">
+            <summary>
+            The class that defines the entry point for the Program.
+            </summary>
+        </member>
+        <member name="F:MusicApp.Program.d">
+            <summary>
+            The Windows Form responsible for the application.
+            </summary>
+        </member>
+        <member name="M:MusicApp.Program.IsUserAdministrator">
+            <summary>
+            This method is used to determine if the app.manifest worked in forcing Run As Administrator.
+            If not, then the application cannot run.
+            </summary>
+            <returns>Retruns true if the user is Administrator.</returns>
+        </member>
+        <member name="M:MusicApp.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:MusicApp.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:MusicApp.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:MusicApp.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
